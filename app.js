@@ -5,11 +5,15 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/users");
 const profileRoutes = require("./routes/profile");
 const postsRoutes = require("./routes/posts");
+const bodyParser = require("body-parser");
 
 const app = express();
-// dotenv.config()
 
-// connection to mongoDb
+// Body Parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// connection to mongoDB
 
 mongoose
   .connect(process.env.MONGOURI, {
