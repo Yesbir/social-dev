@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
+const passport = require("passport");
 
 const userRoutes = require("./routes/users");
 const profileRoutes = require("./routes/profile");
@@ -12,6 +13,11 @@ const app = express();
 // Body Parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// passport
+app.use(passport.initialize());
+
+require("./config/passport")(passport);
 
 // connection to mongoDB
 
