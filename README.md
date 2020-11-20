@@ -1,1 +1,1 @@
-this is first commit contains only basic express server and routes 
+this app is social network for developers
