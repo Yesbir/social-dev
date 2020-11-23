@@ -44,8 +44,6 @@ exports.register = (req, res, next) => {
   // password
 
   const passwordLengthRange = { min: 8, max: 30 };
-  const pattern =
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$";
 
   if (!Validator.isLength(password, passwordLengthRange))
     errors.password = `password should be in between range ${passwordLengthRange.min} to ${passwordLengthRange.max}`;

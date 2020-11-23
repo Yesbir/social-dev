@@ -25,6 +25,7 @@ mongoose
   .connect(process.env.MONGOURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then((res) => console.log("DB is Connected Successfully"))
   .catch((err) => console.log(err));

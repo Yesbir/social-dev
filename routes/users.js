@@ -11,7 +11,7 @@ const router = express.Router();
 // @access private
 // @desc   this is posts/test route
 router.get("/test", (req, res) => {
-  res.json({ msg: "this is user routes" });
+    res.json({ msg: "this is user routes" });
 });
 
 router.post("/register", userValidator.register, userController.register);
@@ -19,9 +19,14 @@ router.post("/register", userValidator.register, userController.register);
 router.post("/login", userValidator.login, userController.login);
 
 router.get(
-  "/current",
-  passport.authenticate("jwt", { session: false }),
-  userController.jwtCurrent
+    "/current",
+    passport.authenticate("jwt", { session: false }),
+    userController.jwtCurrent
+);
+router.delete(
+    "/",
+    passport.authenticate("jwt", { session: false }),
+    userController.deleteUser
 );
 
 module.exports = router;
