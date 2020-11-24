@@ -1,5 +1,4 @@
 const Post = require("../models/Post");
-const { post } = require("../routes/posts");
 const _ = require("lodash");
 
 exports.createPost = async (req, res) => {
