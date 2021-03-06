@@ -1,6 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter, Redirect } from "react-router-dom";
+import _ from "lodash";
+
 import { classNames } from "../../helpers/classNames";
-import devConnector from "../../apis/devConnector";
+import { login } from "../../actions/authAction";
 
 class Login extends Component {
   state = {
@@ -11,16 +15,21 @@ class Login extends Component {
 
   onSubmit = (evt) => {
     evt.preventDefault();
+    const loginData = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+    this.props.login(loginData, this.props.history);
   };
   onLoginInputChange = (evt) => {
     this.setState({ [evt.target.name]: evt.target.value });
-    console.log({ [evt.target.name]: evt.target.value });
   };
 
-  render() {
-    const { errors } = this.state;
+  alreadyLogedIN = () => {
+    const { errors } = this.props;
     return (
       <div className="login">
+        {_.isEmpty(this.props.user) ? "" : <h1>{this.props.user.name}</h1>}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -33,23 +42,31 @@ class Login extends Component {
                   <input
                     type="email"
                     className={classNames("form-control form-control-lg", {
-                      "is-invalid": errors.name,
+                      "is-invalid": errors.email,
                     })}
                     placeholder="Email Address"
                     value={this.state.email}
                     name="email"
                     onChange={this.onLoginInputChange}
                   />
+                  {errors.email && (
+                    <div className="invalid-feedback">{errors.email}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <input
                     type="password"
-                    className="form-control form-control-lg"
+                    className={classNames("form-control form-control-lg", {
+                      "is-invalid": errors.password,
+                    })}
                     placeholder="Password"
                     name="password"
                     value={this.state.password}
                     onChange={this.onLoginInputChange}
                   />
+                  {errors.password && (
+                    <div className="invalid-feedback">{errors.password}</div>
+                  )}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
@@ -58,7 +75,23 @@ class Login extends Component {
         </div>
       </div>
     );
+  };
+
+  render() {
+    if (this.props.isLogedIn) {
+      return <Redirect to="/dashboard" />;
+    } else {
+      return this.alreadyLogedIN();
+    }
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+    errors: state.errors,
+    isLogedIn: state.auth.isLogedIn,
+  };
+};
+
+export default connect(mapStateToProps, { login })(withRouter(Login));
